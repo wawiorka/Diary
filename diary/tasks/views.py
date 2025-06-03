@@ -64,7 +64,7 @@ class GoalCompletedView(APIView):  # используется только UPDAT
         serializer = GoalCompletedSerializer(data=request.data, instance=instance)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"goal": serializer.data})
+        return Response({"tasks from goal": serializer.data})
 
     # для себя
     # def get_queryset(self):

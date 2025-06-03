@@ -53,6 +53,7 @@ class GoalCompletedSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         # user = self.context["request"].user
         instance.is_completed=validated_data['is_completed']
+        instance.save()
         if instance.is_completed:
             tasks = Task.objects.filter(goal=instance.id)
             for task in tasks:
