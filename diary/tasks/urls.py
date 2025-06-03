@@ -14,5 +14,5 @@ router.register(r'task', TaskCompletedView, basename='task_completed')
 urlpatterns = [
     path('', include(router.urls)),
     path('goal/<int:pk>/', GoalCompletedView.as_view(), name="goal_completed"),
-        # path('notifications/', include('notifications.urls', namespace='notifications')),
+        path('notifications/', include('notifications.urls', namespace='notifications')),
 ]

@@ -39,25 +39,30 @@ class Task(models.Model):
 class NotificationsTypes(Enum):
     NEW_NOTE = 'NEW_NOTE'
 
-# create a signal on create new order
+# create a signal on create new goal
 # from django.db.models.signals import post_save, m2m_changed
 # from django.dispatch import receiver
 #
+
+# это сигнал для обновления выполнения задач при выполнении цели
+# но потом я его в сериалайзер перенесла
 # @receiver(m2m_changed, sender=Goal.is_completed)
 # def completed_tasks(sender, created, instance, action, **kwargs):
-#     if action is "post_add" and instance.is_completed == "true":
+#     if action is "goal_add" and instance.is_completed == True:
 #         tasks = Task.objects.filter(goal=instance.id)
 #         for task in tasks:
-#             task.is_completed="true"
+#             task.is_completed = True
 #             task.save()
 
-# @receiver(post_save, sender=Goal)
+# @receiver(post_save, sender=Goal)  # это сигнал для уведомления о создании новой задачи
 # def create_goal(sender, instance, created, **kwargs):
 #     if created:
 #         # send notification
 #         send_message(f'Напоминание', instance.author, NotificationsTypes.NEW_NOTE.value)
 
 
+
+# для себя
 # class NotificationType(models.Model):
 #     name = models.CharField(max_length=100)
 #
