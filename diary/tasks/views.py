@@ -21,13 +21,29 @@ class TaskViewSet(viewsets.ModelViewSet):  # CRUD
         return Task.objects.filter(author=user).order_by('id')
 
 
-class TaskCompletedView(viewsets.ModelViewSet):  # используется только UPDATE
-    serializer_class = TaskCompletedSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
+class TaskCompletedView(APIView):  # используется только UPDATE
+    def put(self, request, *args, **kwargs):
         user = self.request.user
-        return Task.objects.filter(author=user).order_by('id')
+        pk = kwargs.get("pk", None)
+        if not pk:
+            return Response({"error": "Method PUT not allowed"})
+        try:
+            instance = Task.objects.filter(author=user).get(pk=pk)
+        except:
+            return Response({"error": "Object does not exists"})
+
+        serializer = TaskCompletedSerializer(data=request.data, instance=instance)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"task": serializer.data})
+
+
+    # serializer_class = TaskCompletedSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+    #
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     return Task.objects.filter(author=user).order_by('id')
 
 
 class GoalViewSet(viewsets.ModelViewSet):  # используется только READ
@@ -57,14 +73,13 @@ class GoalCompletedView(APIView):  # используется только UPDAT
             return Response({"error": "Method PUT not allowed"})
         try:
             instance = Goal.objects.filter(author=user).get(pk=pk)
-            # tasks = Task.objects.filter(goal=instance.id)
         except:
             return Response({"error": "Object does not exists"})
 
         serializer = GoalCompletedSerializer(data=request.data, instance=instance)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"tasks from goal": serializer.data})
+        return Response({"goal": serializer.data})
 
     # для себя
     # def get_queryset(self):

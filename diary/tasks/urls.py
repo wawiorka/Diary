@@ -9,10 +9,12 @@ router.register(r'tasks', TaskViewSet, basename='tasks')
 router.register(r'goal_cud', GoalAddViewSet, basename='goals_cud')
 # router.register(r'goal', GoalCompletedView, basename='goal_completed')
 # router.register(r'goal', GoalCompletedView.as_view(), basename="goal_completed")
-router.register(r'task', TaskCompletedView, basename='task_completed')
+# router.register(r'task', TaskCompletedView, basename='task_completed')
 
 urlpatterns = [
     path('', include(router.urls)),
     path('goal/<int:pk>/', GoalCompletedView.as_view(), name="goal_completed"),
+    path('task/<int:pk>/', TaskCompletedView.as_view(), name="task_completed"),
+
         # path('notifications/', include('notifications.urls', namespace='notifications')),
 ]

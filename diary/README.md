@@ -1,29 +1,36 @@
 # Digital Diary for Students
 ## Ученики ведут дневник, прикрепляют задачи, отслеживают цели.
 # Темы: 
-- [ ] приватность, 
-- [ ] CRUD, 
+- [x] приватность, 
+- [x] CRUD, 
 - [ ] напоминания.
 
-https://pypi.org/project/urd/
+# Приложения:
+- notes: записи (Дневник)
+- tasks: цели и задачи
+- users: пользователи (simplejwt auth)
 
-TypeError: 'class Meta' got invalid attribute(s): index_together
+# Реализованный функционал сервиса:
+- CRUD по записям, целям, задачам (приватный)
+- выполнение целей и задач (is_completed = True / False)
+- автовыполнение задач после выполнения цели (Goals.is_completed = True)
+- автовыполнение цели после выполнения всех задач
+- если ставим цели False, то все задачи (даже выполненные) тоже False
 
+# В разработке:
+- уведомление при создании цели и задачи
+- уведомление-напоминание о невыполненной цели
+- уведомление-напоминание о невыполненной задаче
+- прикреплять цель/цели к записи
 
-В base/models.py:
+# Недоработки:
+- много ModelViewSet, где не требуется весь CRUD
+- цели и задачи в одном приложении
 
-строка 148 
-
-
-class AbstractNotification(models.Model):
-строка 236
-
-    class Meta:
-        abstract = True
-        ordering = ('-timestamp',)
-        # speed up notifications count query
-        # index_together = ('recipient', 'unread')   # ЗАКОМЕНТИЛА!!! чтобы работали notifications
-        verbose_name = _('Notification')
-        verbose_name_plural = _('Notifications')
+# Технический стек проекта:
+Язык программирования: Python
+Веб-фреймворк: Django REST
+Работа с БД: psycopg2
+База данных: PostgreSQL
 
 

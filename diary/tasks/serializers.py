@@ -23,6 +23,19 @@ class TaskCompletedSerializer(serializers.ModelSerializer):
         model = Task
         fields = ['is_completed']
 
+    def update(self, instance, validated_data):
+        instance.is_completed=validated_data['is_completed']
+        instance.save()
+        # user = self.context["request"].user
+        # tasks = Task.objects.filter(goal=user)
+        if instance.is_completed:
+            tasks_false_completed = Task.objects.filter(goal=instance.goal_id, is_completed=False)
+            if len(tasks_false_completed) == 0:
+                goal = Goal.objects.get(id=instance.goal_id)
+                goal.is_completed = True
+                goal.save()
+        return instance
+
 
 class GoalSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(many=True)
@@ -45,18 +58,20 @@ class GoalAddSerializer(serializers.ModelSerializer):
 
 
 class GoalCompletedSerializer(serializers.ModelSerializer):
-    # tasks = TaskCompletedSerializer(many=True)
     class Meta:
         model = Goal
         fields = ['is_completed']
 
     def update(self, instance, validated_data):
-        # user = self.context["request"].user
         instance.is_completed=validated_data['is_completed']
         instance.save()
+        tasks = Task.objects.filter(goal=instance.id)
         if instance.is_completed:
-            tasks = Task.objects.filter(goal=instance.id)
             for task in tasks:
                 task.is_completed = True
+                task.save()
+        else:
+            for task in tasks:
+                task.is_completed = False
                 task.save()
         return instance
